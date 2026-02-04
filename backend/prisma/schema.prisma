@@ -1,0 +1,128 @@
+// Prisma Schema for HealthVault (SQLite compatible)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User Model
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  phone         String?
+  passwordHash  String
+  firstName     String
+  lastName      String
+  dateOfBirth   DateTime?
+  gender        String?
+  profileImage  String?
+  isVerified    Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  healthId          HealthId?
+  emergencyInfo     EmergencyInfo?
+  medicalRecords    MedicalRecord[]
+  reminders         Reminder[]
+  accessPermissions AccessPermission[]
+  otpCodes          OtpCode[]
+}
+
+// Health ID Model
+model HealthId {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  healthCode  String   @unique
+  qrCodeUrl   String?
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Emergency Information
+model EmergencyInfo {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  bloodGroup      String?
+  allergies       String   @default("[]")
+  chronicDiseases String   @default("[]")
+  medications     String   @default("[]")
+  emergencyContacts String @default("[]")
+  organDonor      Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Medical Records
+model MedicalRecord {
+  id          String   @id @default(uuid())
+  userId      String
+  type        String   @default("OTHER")
+  title       String
+  description String?
+  fileUrl     String
+  fileName    String
+  fileSize    Int
+  mimeType    String
+  metadata    String   @default("{}")
+  tags        String   @default("[]")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Reminders
+model Reminder {
+  id          String    @id @default(uuid())
+  userId      String
+  type        String    @default("OTHER")
+  title       String
+  description String?
+  scheduledAt DateTime
+  recurring   Boolean   @default(false)
+  frequency   String?
+  endDate     DateTime?
+  isActive    Boolean   @default(true)
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Doctor Access Permissions
+model AccessPermission {
+  id          String   @id @default(uuid())
+  userId      String
+  doctorName  String
+  doctorEmail String?
+  doctorPhone String?
+  accessCode  String   @unique
+  expiresAt   DateTime
+  readOnly    Boolean  @default(true)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// OTP Codes for Verification
+model OtpCode {
+  id        String   @id @default(uuid())
+  userId    String
+  code      String
+  type      String   @default("EMAIL_VERIFICATION")
+  expiresAt DateTime
+  isUsed    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
