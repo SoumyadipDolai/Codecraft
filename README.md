@@ -119,3 +119,70 @@ SMTP_PASS=your-app-password
 ## 📄 License
 
 MIT
+
+
+flowchart TD
+    %% Phases
+    A[Requirements & Research] --> B[Conceptual Design]
+    B --> C[Prototyping & Validation]
+    C --> D[Implementation & Development]
+    D --> E[Testing & Quality Assurance]
+    E --> F[Deployment & Release]
+    F --> G[Monitoring & Maintenance]
+
+   %% Detailed steps
+    subgraph Req[Requirements & Research]
+        A1[Stakeholder Interviews]
+        A2[Market & Feasibility Study]
+        A3[User Stories & Use Cases]
+        A4[Technical Feasibility & Risk Assessment]
+    end
+    A --> A1 --> A2 --> A3 --> A4 --> B
+
+subgraph Design[Conceptual Design]
+        B1[Architecture Blueprint]
+        B2[Data & Process Modeling]
+        B3[Technology Stack Selection]
+        B4[Security & Compliance Planning]
+    end
+    B --> B1 --> B2 --> B3 --> B4 --> C
+
+subgraph Proto[Prototyping & Validation]
+        C1[Rapid UI/UX Mockups]
+        C2[Proof‑of‑Concept (PoC) Development]
+        C3[User Feedback Loops]
+        C4[Iterative Refinement]
+    end
+    C --> C1 --> C2 --> C3 --> C4 --> D
+
+subgraph Impl[Implementation & Development]
+        D1[Codebase Setup & Repo Init]
+        D2[Feature Development (Modules/Components)]
+        D3[Integration with Services (APIs, DB, Cloud)]
+        D4[Continuous Integration (CI) Pipelines]
+    end
+    D --> D1 --> D2 --> D3 --> D4 --> E
+
+subgraph Test[Testing & QA]
+        E1[Unit & Integration Tests]
+        E2[Performance & Load Testing]
+        E3[Security & Pen‑Testing]
+        E4[User Acceptance Testing (UAT)]
+    end
+    E --> E1 --> E2 --> E3 --> E4 --> F
+
+subgraph Deploy[Deployment & Release]
+        F1[Staging Deployment]
+        F2[Release Candidate Validation]
+        F3[Production Roll‑out (Blue/Green, Canary)]
+        F4[Documentation & Training]
+    end
+    F --> F1 --> F2 --> F3 --> F4 --> G
+
+subgraph Ops[Monitoring & Maintenance]
+        G1[Observability (Metrics, Logs, Traces)]
+        G2[Incident Management & SLA Tracking]
+        G3[Continuous Improvement & Feature Enhancements]
+        G4[Technical Debt & Refactoring]
+    end
+    G --> G1 --> G2 --> G3 --> G4
